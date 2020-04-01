@@ -8,3 +8,24 @@
 
   (click to see Youtube Video)
 </p>
+
+
+## Objective 
+
+  - Control a car based on ROS (Robotic Operation System), using information from traffoc light classificaiotn 
+  - This runs on a simulator and a real car
+
+## Approach/Process 
+
+- The structure of ROS is as below 
+
+<img src="final-project-ros-graph-v2.png" widgh = 400>
+
+- Traffic light classification model is using pre-trained model trained by Tensorflow:
+  - The pretrained model is SSD-Mobile Net V1
+  - Training data is traffic light images in the simualtor, annotated by Vatsal (https://github.com/coldKnight/TrafficLight_Detection-TensorFlowAPI#get-the-dataset)
+
+
+## Result 
+
+- The car could run smoothly in the simulator (see the video above)
