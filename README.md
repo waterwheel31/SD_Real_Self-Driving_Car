@@ -19,10 +19,10 @@
 
 - The structure of ROS is as below 
 
-<img src="final-project-ros-graph-v2.png" widgh = 400>
+<img src="final-project-ros-graph-v2.png" widgh = 300>
 
-- Traffic light classification model is using pre-trained model trained by Tensorflow:
-  - The pretrained model is SSD-Mobile Net V1
+- Traffic light classification model (this is used in the "Traffic Light Detection Node" in the map above) uses pre-trained model: 
+  - The pretrained model is SSD-Mobile Net V1 (from TensorFlow Models)
   - Training data is traffic light images in the simualtor, annotated by Vatsal (https://github.com/coldKnight/TrafficLight_Detection-TensorFlowAPI#get-the-dataset)
 
 
