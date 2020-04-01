@@ -11,10 +11,12 @@ class TLClassifier(object):
         #TODO load classifier
         
         self.current_light = TrafficLight.UNKNOWN
-        #self.category_index = {1: 'Green', 2: 'Red', 3: 'Yellow', 4: 'Off'}
-        self.category_index = {1: 'Off', 2: 'Green', 3: 'Yellow', 4: 'Red'}
+        self.category_index = {1: 'Green', 2: 'Red', 3: 'Yellow', 4: 'Off'}
+        #self.category_index = {1: 'Off', 2: 'Green', 3: 'Yellow', 4: 'Red'}  # Bosch 
         
-        relative_path = '/transfer_ssd_mobilenet_v1_coco_2017_11_17/frozen_inference_graph.pb'
+        #relative_path = '/transfer_ssd_mobilenet_v1_coco_2017_11_17/frozen_inference_graph.pb'
+        #relative_path = '/model2/frozen_inference_graph.pb'
+        relative_path = '/models/ssd_sim/frozen_inference_graph.pb'
         cwd = os.path.dirname(os.path.realpath(__file__))
         model_path = cwd + relative_path
         
@@ -26,15 +28,15 @@ class TLClassifier(object):
                 od_graph_def.ParseFromString(serialized_graph)
                 tf.import_graph_def(od_graph_def, name='')
     
+            
+            self.image_tensor = self.graph.get_tensor_by_name('image_tensor:0')
+            self.detection_boxes = self.graph.get_tensor_by_name('detection_boxes:0')
+            self.detection_scores = self.graph.get_tensor_by_name('detection_scores:0')
+            self.detection_classes = self.graph.get_tensor_by_name('detection_classes:0')
+            self.num_detections = self.graph.get_tensor_by_name('num_detections:0')
+    
         config = tf.ConfigProto()
         self.sess = tf.Session(graph=self.graph, config=config)
-        self.image_tensor = self.graph.get_tensor_by_name('image_tensor:0')
-        self.detection_boxes = self.graph.get_tensor_by_name('detection_boxes:0')
-        self.detection_scores = self.graph.get_tensor_by_name('detection_scores:0')
-        self.detection_classes = self.graph.get_tensor_by_name('detection_classes:0')
-        self.num_detections = self.graph.get_tensor_by_name('num_detections:0')
-    
- 
  
     
     def get_classification(self, image):
@@ -79,7 +81,7 @@ class TLClassifier(object):
                 elif class_clr == "Green": 
                     count_green += 1
             
-        if count_red / count_total > red_ratio_th:
+        if count_red / (count_total+0.00001) > red_ratio_th:
             self.current_light = TrafficLight.RED
         #elif count_green > 0 and count_green > count_red:
         #    self.current_light = TrafficLight.GREEN
